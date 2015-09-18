@@ -16,8 +16,6 @@ import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
-import java.util.Map;
-
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = LoginActivity.class.getSimpleName();
@@ -87,7 +85,6 @@ public class LoginActivity extends AppCompatActivity {
         mFirebaseRef.removeAuthStateListener(mAuthStateListener);
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         /* If a user is currently authenticated, display a logout menu */
@@ -122,26 +119,6 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-
-    /**
-     * This method will attempt to authenticate a user to firebase given an oauth_token (and other
-     * necessary parameters depending on the provider)
-     */
-    private void authWithFirebase(final String provider, Map<String, String> options) {
-        if (options.containsKey("error")) {
-            showErrorDialog(options.get("error"));
-        } else {
-            mAuthProgressDialog.show();
-            if (provider.equals("twitter")) {
-                // if the provider is twitter, we pust pass in additional options, so use the options endpoint
-                mFirebaseRef.authWithOAuthToken(provider, options, new AuthResultHandler(provider));
-            } else {
-                // if the provider is not twitter, we just need to pass in the oauth_token
-                mFirebaseRef.authWithOAuthToken(provider, options.get("oauth_token"), new AuthResultHandler(provider));
-            }
-        }
-    }
-
     /**
      * Once a user is logged in, take the mAuthData provided from Firebase and "use" it.
      */
@@ -152,12 +129,7 @@ public class LoginActivity extends AppCompatActivity {
             mLoggedInStatusTextView.setVisibility(View.VISIBLE);
             /* show a provider specific status text */
             String name = null;
-            if (authData.getProvider().equals("facebook")
-                    || authData.getProvider().equals("google")
-                    || authData.getProvider().equals("twitter")) {
-                name = (String) authData.getProviderData().get("displayName");
-            } else if (authData.getProvider().equals("anonymous")
-                    || authData.getProvider().equals("password")) {
+            if (authData.getProvider().equals("password")) {
                 name = authData.getUid();
             } else {
                 Log.e(TAG, "Invalid provider: " + authData.getProvider());
