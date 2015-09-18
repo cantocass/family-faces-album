@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Family Faces</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_logout">Logout</string>
+    <string name="login">Login</string>
+    <string name="email">Email Address</string>
+    <string name="password">App Password</string>
+</resources>
